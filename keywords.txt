@@ -1,0 +1,34 @@
+###########################################
+# Syntax Coloring Map For YAPID
+#             Version 1.0
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+YAPID					KEYWORD1
+YAPIDController			KEYWORD1
+YAPIDAutotuner			KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+setConservativeTunings	KEYWORD2
+setAggresiveTunings		KEYWORD2
+setTunings				KEYWORD2
+getTunings				KEYWORD2
+reset					KEYWORD2
+compute					KEYWORD2
+begin					KEYWORD2
+runtime					KEYWORD2
+end						KEYWORD2
+
+###########################################
+# Constants (LITERAL1)
+###########################################
+YAPID_P					LITERAL1
+YAPID_PI				LITERAL1
+YAPID_PID				LITERAL1
+DECAY_NONE				LITERAL1
+DECAY_QUADRATIC			LITERAL1
+DECAY_RESET				LITERAL1
