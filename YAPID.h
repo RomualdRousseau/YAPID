@@ -68,6 +68,8 @@ public:
 	}
 
 	int compute(const int error);
+	
+	int compute(const int error, const float derivative_error);
 
 private:
 	const int m_outMin;

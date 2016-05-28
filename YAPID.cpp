@@ -32,10 +32,28 @@ int YAPIDController::compute(const int error)
 		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_outMin, m_outMax);
 	}
 
-	float derivate_error = m_Kd * (error - m_last_error) / dt;
+	float derivative_error = (error - m_last_error) / dt;
 	m_last_error = error;
 
-	return constrain(m_Kp * error + m_integral_error + derivate_error, m_outMin, m_outMax);
+	return constrain(m_Kp * error + m_integral_error + m_Kd * derivative_error, m_outMin, m_outMax);
+}
+
+int YAPIDController::compute(const int error, const float derivative_error)
+{
+	unsigned long now = millis();
+	float dt = (now - m_last_time) / 1000.0;
+	m_last_time = now;
+	
+	if(m_last_error == 0 && error == 0)
+	{
+		m_integral_error *= m_decay;
+	}
+	else
+	{
+		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_outMin, m_outMax);
+	}
+
+	return constrain(m_Kp * error + m_integral_error + m_Kd * derivative_error, m_outMin, m_outMax);
 }
 
 int YAPIDAutotuner::runtime(int input, int output)
