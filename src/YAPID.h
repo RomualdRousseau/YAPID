@@ -31,6 +31,18 @@ public:
 	YAPIDController(const int outMin, const int outMax, const float decay):
 		m_outMin(outMin),
 		m_outMax(outMax),
+		m_intMin(outMin),
+		m_intMax(outMax),
+		m_decay(decay)
+	{
+		reset();
+	}
+	
+	YAPIDController(const int outMin, const int outMax, const int intMin, const int intMax, const float decay):
+		m_outMin(outMin),
+		m_outMax(outMax),
+		m_intMin(intMin),
+		m_intMax(intMax),
 		m_decay(decay)
 	{
 		reset();
@@ -70,10 +82,16 @@ public:
 	int compute(const int error);
 	
 	int compute(const int error, const float derivative_error);
+	
+	float compute(const float error);
+	
+	float compute(const float error, const float derivative_error);
 
 private:
 	const int m_outMin;
 	const int m_outMax;
+	const int m_intMin;
+	const int m_intMax;
 	const float m_decay;
 	float m_Kp;
 	float m_Ki;

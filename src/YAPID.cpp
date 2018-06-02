@@ -29,7 +29,7 @@ int YAPIDController::compute(const int error)
 	}
 	else
 	{
-		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_outMin, m_outMax);
+		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_intMin, m_intMax);
 	}
 
 	float derivative_error = (error - m_last_error) / dt;
@@ -50,10 +50,49 @@ int YAPIDController::compute(const int error, const float derivative_error)
 	}
 	else
 	{
-		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_outMin, m_outMax);
+		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, m_intMin, m_intMax);
 	}
 
 	return constrain(m_Kp * error + m_integral_error + m_Kd * derivative_error, m_outMin, m_outMax);
+}
+
+float YAPIDController::compute(const float error)
+{
+	unsigned long now = millis();
+	float dt = (now - m_last_time) / 1000.0;
+	m_last_time = now;
+	
+	if(m_last_error == 0 && error == 0)
+	{
+		m_integral_error *= m_decay;
+	}
+	else
+	{
+		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, (float) m_intMin, (float) m_intMax);
+	}
+
+	float derivative_error = (error - m_last_error) / dt;
+	m_last_error = error;
+
+	return constrain(m_Kp * error + m_integral_error + m_Kd * derivative_error, (float) m_outMin, (float) m_outMax);
+}
+
+float YAPIDController::compute(const float error, const float derivative_error)
+{
+	unsigned long now = millis();
+	float dt = (now - m_last_time) / 1000.0;
+	m_last_time = now;
+	
+	if(m_last_error == 0 && error == 0)
+	{
+		m_integral_error *= m_decay;
+	}
+	else
+	{
+		m_integral_error = constrain(m_integral_error + m_Ki * error * dt, (float) m_intMin, (float) m_intMax);
+	}
+
+	return constrain(m_Kp * error + m_integral_error + m_Kd * derivative_error, (float) m_outMin, (float) m_outMax);
 }
 
 int YAPIDAutotuner::runtime(int input, int output)
